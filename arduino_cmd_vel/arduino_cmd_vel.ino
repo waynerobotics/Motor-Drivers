@@ -19,7 +19,7 @@
 ros::NodeHandle nh;
 
 //this happens when cmd_vel message is recieved
-void messageCb(const geometry_msgs::Twist &msg)
+void messageCb(const geometry_msgs::Twist &cmdVel)
 {
     //set direction pins - switch the 1's and 0's if results are backwards on actual motors
     if (cmdVel.linear.x > 0) // going forward

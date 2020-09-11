@@ -16,7 +16,7 @@ void setup() {
   pinMode(DIR_LEFT, OUTPUT);
   analogWrite(PWM_LEFT, 255);
   analogWrite(PWM_RIGHT, 255);
-  digitalWrite(DIR_LEFT, HIGH);
+  digitalWrite(DIR_LEFT, LOW);
   digitalWrite(DIR_RIGHT, LOW);
 }
 
