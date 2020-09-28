@@ -1,5 +1,6 @@
 #include <ros.h>
 #include <geometry_msgs/Twist.h>
+#include <std_msgs/Bool.h>
 
 
 #define R_PWM 5
@@ -26,7 +27,8 @@
 ros::NodeHandle nh;
 
 geometry_msgs::Twist cmd_msg;
-ros::Publisher chatter("test_cmd", &cmd_msg);
+std_msgs::Bool handshake_msg;
+ros::Publisher handshake("arduino_nano_handshake", &handshake_msg);
 
 // Map x value from [0 .. 1] to [out_min .. out_max]
 float mapPwm(float x, float out_min, float out_max)
@@ -37,7 +39,6 @@ float mapPwm(float x, float out_min, float out_max)
 //this happens when cmd_vel message is recieved
 void onTwist(const geometry_msgs::Twist &msg)
 {
-  chatter.publish(&msg);
   digitalWrite(LED_BUILTIN, HIGH);
 
   // Cap values at [-1 .. 1]
@@ -75,7 +76,7 @@ void setup()
   analogWrite(R_PWM, 0);
   pinMode(LED_BUILTIN, OUTPUT);
   nh.initNode();
-  nh.advertise(chatter);
+  nh.advertise(handshake);
   nh.subscribe(sub);
   //Serial.begin (9600);
 }
@@ -83,6 +84,8 @@ void setup()
 void loop()
 {
 
+  handshake_msg.data = true;
+  handshake.publish(&handshake_msg);
   nh.spinOnce();
   delay(10);
 }
